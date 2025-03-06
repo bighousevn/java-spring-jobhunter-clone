@@ -1,7 +1,9 @@
 package vn.bighousevn.jobhunter.util;
 
 import org.springframework.core.MethodParameter;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpResponse;
@@ -16,7 +18,7 @@ import vn.bighousevn.jobhunter.util.annotation.ApiMessage;
 public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override
-    public boolean supports(MethodParameter returnType, Class converterType) {
+    public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
 
@@ -25,7 +27,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
             Object body,
             MethodParameter returnType,
             MediaType selectedContentType,
-            Class selectedConverterType,
+            Class<? extends HttpMessageConverter<?>> selectedConverterType,
             ServerHttpRequest request,
             ServerHttpResponse response) {
         HttpServletResponse servletResponse = ((ServletServerHttpResponse) response).getServletResponse();
@@ -34,7 +36,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(status);
 
-        if (body instanceof String) {
+        if (body instanceof String || body instanceof Resource) {
             return body;
         }
 

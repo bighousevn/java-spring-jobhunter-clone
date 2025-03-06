@@ -73,7 +73,8 @@ public class JobController {
             throw new IdInvalidException("Id khong ton tai");
         }
         return ResponseEntity.ok()
-                .body(this.jobService.convertToResUpdateJobDTO(this.jobService.handleUpdateJob(optionalJob.get())));
+                .body(this.jobService
+                        .convertToResUpdateJobDTO(this.jobService.handleUpdateJob(job, optionalJob.get())));
     }
 
     @DeleteMapping("/jobs")

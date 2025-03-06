@@ -1,5 +1,7 @@
 package vn.bighousevn.jobhunter.controller;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
@@ -37,6 +39,12 @@ public class CompanyController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(this.companyService.handleCreateCompany(company));
+    }
+
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<Company> handleGetCompanyById(@PathVariable(name = "id") long id) {
+        Optional<Company> com = this.companyService.findById(id);
+        return ResponseEntity.ok().body(com.get());
     }
 
     @GetMapping("/companies")

@@ -63,7 +63,7 @@ public class SkillController {
         if (currentSkill == null) {
             throw new IdInvalidException("Skill id = " + id + " không tồn tại");
         }
-        this.skillService.handleDeleteSkillById(id);
+        this.skillService.handleDeleteSkillById(currentSkill);
         return ResponseEntity.ok().body(null);
     }
 

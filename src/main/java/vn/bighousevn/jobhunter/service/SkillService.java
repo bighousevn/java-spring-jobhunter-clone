@@ -39,16 +39,18 @@ public class SkillService {
         mt.setTotal(skillPage.getNumberOfElements());
 
         rs.setMeta(mt);
-        rs.setResult(skillPage);
+        rs.setResult(skillPage.getContent());
         return rs;
     }
 
-    public void handleDeleteSkillById(long id) {
+    public void handleDeleteSkillById(Skill currentSkill) {
         // delete job (inside job_skill table)
-        Optional<Skill> skillOptional = this.skillRepository.findById(id);
-        Skill currentSkill = skillOptional.get();
+
         currentSkill.getJobs().forEach(job -> job.getSkills().remove(currentSkill));
 
+        // delte subscriber inside subsriber_skill table)
+
+        currentSkill.getSubscribers().forEach(item -> item.getSkills().remove(currentSkill));
         // delete skill
         this.skillRepository.delete(currentSkill);
     }
